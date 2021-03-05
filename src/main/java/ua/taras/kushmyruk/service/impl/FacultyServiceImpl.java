@@ -35,8 +35,6 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public Faculty getFacultyByName(String facultyName){
         Faculty faculty = facultyRepository.findByFacultyName(facultyName);
-        Hibernate.initialize(faculty.getRequiredDisciplines());
-        Hibernate.initialize(faculty.getFacultyAddress());
         return faculty ;
     }
 
@@ -82,8 +80,6 @@ public class FacultyServiceImpl implements FacultyService {
     public void redactFaculty(String facultyName, int freePlaces, int scholarshipPlaces, String disciplines,
                               String city, String street, String building, String [] redactedDisciplines) {
         Faculty faculty  = facultyRepository.findByFacultyName(facultyName);
-        Hibernate.initialize(faculty.getRequiredDisciplines());
-        Hibernate.initialize(faculty.getFacultyAddress());
         faculty.setFreePlaces(freePlaces);
         faculty.setScholarshipPlaces(scholarshipPlaces);
         facultyRepository.save(faculty);

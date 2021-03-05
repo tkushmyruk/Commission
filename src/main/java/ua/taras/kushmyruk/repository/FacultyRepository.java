@@ -11,13 +11,13 @@ import java.util.List;
 
 @Repository
 public interface FacultyRepository  extends JpaRepository<Faculty, String> {
-    Faculty findByFacultyName(String facultyName);
-
+    @Query("SELECT f FROM Faculty f LEFT JOIN FETCH f.requiredDisciplines LEFT JOIN FETCH f.facultyAddress WHERE f.facultyName = :facultyName")
+    Faculty findByFacultyName(@Param("facultyName") String facultyName);
 
     List<Faculty> findByOrderByFacultyNameAsc();
 
-
     List<Faculty> findByOrderByFreePlacesAsc();
+
 
 
 

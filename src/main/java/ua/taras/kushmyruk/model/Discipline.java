@@ -20,6 +20,18 @@ public class Discipline {
     @JoinColumn(name= "certificate_id")
     private Certificate certificate;
 
+    public Discipline() {
+    }
+
+    public Discipline(String disciplineName) {
+        this.disciplineName = disciplineName;
+    }
+
+    public Discipline(String disciplineName, Integer score) {
+        this.disciplineName = disciplineName;
+        this.score = score;
+    }
+
     public Long getId() {
         return id;
     }
