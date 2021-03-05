@@ -1,6 +1,8 @@
 package ua.taras.kushmyruk.controller;
 
 import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import java.time.LocalDate;
 @Controller
 @RequestMapping("/student")
 public class StudentController {
+    private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
     private final StudentService studentService;
     private final UserServiceImpl userService;
 
@@ -25,12 +28,14 @@ public class StudentController {
 
     @GetMapping()
     public String getUserAccount(@AuthenticationPrincipal User user, Model model){
+        logger.info(":{} account page", user.getUsername());
          model.addAttribute("studentStudentOrders", user.getStudentOrders() );
         return "userAccount";
     }
 
     @GetMapping("/change-password")
     public String changePasswordPage(@AuthenticationPrincipal User user, Model model){
+        logger.info("Change :{} password page", user.getUsername() );
         model.addAttribute("username", user.getUsername());
         model.addAttribute("password", user.getPassword());
         model.addAttribute("email", user.getEmail());
@@ -39,6 +44,7 @@ public class StudentController {
 
     @GetMapping("/messages")
     public String getMessages(@AuthenticationPrincipal User user, Model model){
+        logger.info("Messages :{}", user.getUsername());
         model.addAttribute("isReadNotifications", studentService.getReadNotification(user));
         model.addAttribute("notReadNotifications", studentService.getNotReadNotification(user));
         return "messages" ;
@@ -47,6 +53,7 @@ public class StudentController {
 
     @GetMapping("/change-student-order")
     public String changeStudentOrderPage(@AuthenticationPrincipal User user, Model model){
+        logger.info("Start changing student order :{} page", user.getUsername());
           model.addAttribute("studentOrders", studentService.getSO(user));
         return "changeStudentOrder";
     }
@@ -56,6 +63,7 @@ public class StudentController {
     public String changePersonalInformationPage(@AuthenticationPrincipal User user,
                                                 @PathVariable String facultyName,
                                                 Model model){
+        logger.info("Start changing student order :{} page", user.getUsername());
         model.addAttribute("facultyName", facultyName);
         model.addAttribute("personalInfo", studentService.getStudentPersonalInfo(user, facultyName));
         return "changeStudentOrderPersonal";
@@ -68,6 +76,7 @@ public class StudentController {
             @PathVariable String facultyName,
             Model model
     ){
+        logger.info("Change address student order :{} page", user.getUsername());
         model.addAttribute("facultyName", facultyName);
         model.addAttribute("addressInfo", studentService.getStudentAddress(user, facultyName));
         return "changeStudentOrderAddress";
@@ -79,6 +88,7 @@ public class StudentController {
             @PathVariable String facultyName,
             Model model
     ){
+        logger.info("Change passport student order :{} page", user.getUsername());
         model.addAttribute("facultyName", facultyName);
         model.addAttribute("passportInfo", studentService.getStudentPassportInfo(user, facultyName));
         return "changeStudentOrderPassport";
@@ -90,6 +100,7 @@ public class StudentController {
             @PathVariable String facultyName,
             Model model
     ){
+        logger.info("Change certificate student order :{} page", user.getUsername());
         model.addAttribute("facultyName", facultyName);
         model.addAttribute("certificateInfo", studentService.getStudentCertificateInfo(user, facultyName));
         return "changeStudentOrderCertificate";

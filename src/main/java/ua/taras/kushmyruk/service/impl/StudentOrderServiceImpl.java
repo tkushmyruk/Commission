@@ -1,9 +1,12 @@
 package ua.taras.kushmyruk.service.impl;
 
 import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import ua.taras.kushmyruk.controller.FacultyController;
 import ua.taras.kushmyruk.model.*;
 import ua.taras.kushmyruk.repository.*;
 import ua.taras.kushmyruk.service.StudentOrderService;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 public class StudentOrderServiceImpl implements StudentOrderService {
     private final String UPLOAD_PATH = "/Users/roman/IdeaProjects/university/studentPhotoFiles";
 
+    private static final Logger logger = LoggerFactory.getLogger(StudentOrderServiceImpl.class);
     private final FacultyRepository facultyRepository;
     private final StudentOrderRepository studentOrderRepository;
     private final AddressRepository addressRepository;

@@ -1,5 +1,7 @@
 package ua.taras.kushmyruk.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import java.time.LocalDate;
 @Controller
 @RequestMapping("/student-order")
 public class StudentOrderController {
+    private static final Logger logger = LoggerFactory.getLogger(StudentOrderController.class);
     private final StudentOrderService studentOrderService ;
     private final StudentService studentService;
     private final FacultyService facultyService;
@@ -29,6 +32,7 @@ public class StudentOrderController {
     public String getStudentOrderPage(@AuthenticationPrincipal User user,
                                       @PathVariable String facultyName,
                                       Model model) {
+        logger.info("Start sending student order to :{} faculty", facultyName);
         model.addAttribute("facultyName", facultyName);
         System.out.println(studentService.checkIsSendedStudentOrder(user, facultyName));
         model.addAttribute("isSended", studentService.checkIsSendedStudentOrder(user,facultyName));
@@ -37,36 +41,36 @@ public class StudentOrderController {
 
     @GetMapping("/{facultyName}/1")
     public String getStudentInfoPage(@PathVariable String facultyName, Model model) {
+        logger.info("Add personal info :{} faculty", facultyName);
         model.addAttribute("facultyName", facultyName);
         return "studentOrder_2";
     }
 
     @GetMapping("/{facultyName}/2")
     public String getAddressInfo(@PathVariable String facultyName, Model model) {
+        logger.info("Add address info :{} faculty", facultyName);
         model.addAttribute("facultyName", facultyName);
         return "studentOrder_3";
     }
 
     @GetMapping("/{facultyName}/3")
     public String getPassportInfo(@PathVariable String facultyName, Model model){
+        logger.info("Add passport info :{} faculty", facultyName);
         model.addAttribute("facultyName", facultyName);
         return "studentOrder_4";
     }
 
     @GetMapping("/{facultyName}/4")
     public String getCertificateInfo(@PathVariable String facultyName, Model model){
+        logger.info("Add certificate info :{} faculty", facultyName);
         model.addAttribute("facultyName", facultyName);
         model.addAttribute("disciplines", facultyService.getRequiredDisciplines(facultyName));
         return "studentOrder_5";
     }
 
-    @GetMapping("/{facultyName}/5")
-    public String addCerificateAndPassport(@PathVariable String facultyName, Model model){
-        model.addAttribute("facultyName", facultyName);
-        return "studentOrder_6";
-    }
     @GetMapping("/submitStudentOrder")
     public String getEndPage(){
+        logger.info("Submit page");
         return "submitStudentOrder";
     }
 

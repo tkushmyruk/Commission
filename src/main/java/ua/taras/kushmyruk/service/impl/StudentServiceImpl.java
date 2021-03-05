@@ -1,8 +1,12 @@
 package ua.taras.kushmyruk.service.impl;
 
 import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import ua.taras.kushmyruk.controller.FacultyController;
 import ua.taras.kushmyruk.model.*;
 import ua.taras.kushmyruk.repository.*;
 import ua.taras.kushmyruk.service.StudentService;
@@ -20,6 +24,7 @@ import java.util.stream.Collectors;
 public class StudentServiceImpl implements StudentService {
     private final String UPLOAD_PATH = "/Users/roman/IdeaProjects/university/studentPhotoFiles";
 
+    private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
@@ -67,6 +72,7 @@ public class StudentServiceImpl implements StudentService {
                 notificationRepository.save(notification);
             }
         });
+        logger.info("Messages was marked as read :{}", authenticatedUser.getUsername());
     }
 
     @Override
@@ -97,6 +103,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional
     public void changeStudentPersonalInfo(User user, String facultyName, String firstName, String middleName,
                                      String lastName, String gender, String nationality, LocalDate dateOfBirth){
         StudentPersonalInfo studentPersonalInfo = getStudentPersonalInfo(user, facultyName);
@@ -121,6 +128,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional
     public void changeStudentAddressInfo(User user, String facultyName, String city, String street, String building,
                                          String apartment, String postcode){
 
@@ -145,6 +153,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional
     public void changeStudentPassportInfo(User user,String facultyName, String passportSeria, String passportNumber,
                                           String registrationOffice, LocalDate issueDate, MultipartFile passportFile){
         Passport passport = getStudentPassportInfo(user, facultyName);
@@ -184,6 +193,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional
     public void changeStudentCertificateInfo(User user, String facultyName, String schoolName, String certificateNumber,
                                           LocalDate endSchoolDate, String[] scores, MultipartFile certificateFile){
         Certificate certificate  = getStudentCertificateInfo(user, facultyName);

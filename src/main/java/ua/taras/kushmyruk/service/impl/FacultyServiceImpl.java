@@ -1,10 +1,16 @@
 package ua.taras.kushmyruk.service.impl;
 
-import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.taras.kushmyruk.model.*;
-import ua.taras.kushmyruk.repository.*;
+import ua.taras.kushmyruk.model.Address;
+import ua.taras.kushmyruk.model.Discipline;
+import ua.taras.kushmyruk.model.Faculty;
+import ua.taras.kushmyruk.model.StudentOrder;
+import ua.taras.kushmyruk.repository.AddressRepository;
+import ua.taras.kushmyruk.repository.DisciplineRepository;
+import ua.taras.kushmyruk.repository.FacultyRepository;
 import ua.taras.kushmyruk.service.FacultyService;
 
 import java.util.Arrays;
@@ -14,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
+    private static final Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
     private final FacultyRepository facultyRepository;
     private final AddressRepository addressRepository;
     private final DisciplineRepository disciplineRepository;
@@ -74,9 +81,11 @@ public class FacultyServiceImpl implements FacultyService {
         address.setBuilding(building);
         address.setFaculty(faculty);
         addressRepository.save(address);
+        logger.info("Faculty :{} was successfully added");
     }
 
     @Override
+    @Transactional
     public void redactFaculty(String facultyName, int freePlaces, int scholarshipPlaces, String disciplines,
                               String city, String street, String building, String [] redactedDisciplines) {
         Faculty faculty  = facultyRepository.findByFacultyName(facultyName);
@@ -104,8 +113,8 @@ public class FacultyServiceImpl implements FacultyService {
         address.setCity(city);
         address.setStreet(street);
         address.setBuilding(building);
-
         addressRepository.save(address);
+        logger.info("Faculty :{} was successfully  changed", facultyName);
     }
 
     @Override
